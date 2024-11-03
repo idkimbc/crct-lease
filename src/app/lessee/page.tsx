@@ -37,29 +37,14 @@ import {
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 import PhantomWalletButton from "@/components/phantom-wallet-button/PhantomWalletButton";
 import getProvider from "@/utils/getProvider";
-import cluster from "cluster";
+import { circleTransfer } from "@/utils/circle-manual-transfer";
 
 const LesseePortal = () => {
-  const [connected, setConnected] = useState(false);
-  const wallet = useWallet();
-
-  const connectWallet = async () => {
-    if (wallet) {
-      try {
-        await wallet.connect();
-        setConnected(true);
-      } catch (error) {
-        console.error("Wallet connection failed:", error);
-      }
-    }
-  };
-
   const checkConnection = async () => {
-    const provider = getProvider(); // see "Detecting the Provider"
+    const provider = getProvider();
     try {
       const resp = await provider.connect();
       console.log(resp.publicKey.toString());
-      // 26qv4GCcx98RihuK3c4T6ozB3J7L6VwCuFVc7Ta2A3Uo
     } catch (err) {
       // { code: 4001, message: 'User rejected the request.' }
     }
@@ -82,6 +67,8 @@ const LesseePortal = () => {
     transaction.recentBlockhash = (
       await connection.getLatestBlockhash()
     ).blockhash;
+    const usdcTransfer = await circleTransfer();
+    console.log("transfer: ", usdcTransfer);
     const { signature } = await provider.signAndSendTransaction(transaction);
     await connection.getSignatureStatus(signature);
   };
