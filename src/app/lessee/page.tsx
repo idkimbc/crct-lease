@@ -40,14 +40,15 @@ import getProvider from "@/utils/getProvider";
 import { circleTransfer } from "@/utils/circle-manual-transfer";
 import { useSearchParams } from "next/navigation";
 import handleQueryParams from "@/utils/handleQueryParams";
+import { Chain, ChainContext } from "@wormhole-foundation/sdk";
 
 const LesseePortal = () => {
-  const chain = handleQueryParams();
+  const chain: Chain = handleQueryParams() as Chain;
 
   const checkConnection = async () => {
     const provider = getProvider();
     try {
-      const resp = await provider.connect();
+      const resp = await provider!.connect();
       console.log(resp.publicKey.toString());
     } catch (err) {
       // { code: 4001, message: 'User rejected the request.' }
@@ -56,7 +57,7 @@ const LesseePortal = () => {
 
   const sendTransaction = async () => {
     const provider = getProvider();
-    const resp = await provider.connect();
+    const resp = await provider!.connect();
     const sender = resp.publicKey;
     const connection = new Connection(clusterApiUrl("devnet"));
     const transaction = new Transaction();
@@ -71,7 +72,7 @@ const LesseePortal = () => {
     transaction.recentBlockhash = (
       await connection.getLatestBlockhash()
     ).blockhash;
-    const { signature } = await provider.signAndSendTransaction(transaction);
+    const { signature } = await provider!.signAndSendTransaction(transaction);
     await connection.getSignatureStatus(signature);
     const usdcTransfer = await circleTransfer(chain);
     console.log("transfer: ", usdcTransfer);

@@ -35,7 +35,7 @@ const LeasePaymentInterface = () => {
     { id: "avalanche", name: "Avalanche", symbol: "AVAX" },
   ];
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: String) => {
     switch (status) {
       case "completed":
         return <Check className="h-5 w-5 text-green-500" />;
@@ -48,7 +48,7 @@ const LeasePaymentInterface = () => {
     }
   };
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: String) => {
     const baseClasses = "px-2 py-1 rounded-full text-xs font-medium";
     switch (status) {
       case "completed":

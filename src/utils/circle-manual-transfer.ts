@@ -1,10 +1,15 @@
-import { CircleTransfer, wormhole } from "@wormhole-foundation/sdk";
+import {
+  Chain,
+  ChainContext,
+  CircleTransfer,
+  wormhole,
+} from "@wormhole-foundation/sdk";
 import evm from "@wormhole-foundation/sdk/evm";
 import solana from "@wormhole-foundation/sdk/solana";
 import { getSigner } from "../helpers/helpers";
 import handleQueryParams from "./handleQueryParams";
 
-export async function circleTransfer(chain: string) {
+export async function circleTransfer(chain: Chain) {
   // Initialize the Wormhole object for the Testnet environment and add supported chains (evm and solana)
   const wh = await wormhole("Testnet", [evm, solana]);
   console.log("Chain: ", chain);
